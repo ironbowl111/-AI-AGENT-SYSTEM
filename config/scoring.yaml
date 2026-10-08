@@ -1,0 +1,69 @@
+# ============================================================
+# 【コンフィグ 2/2】スコアリングの規則
+#
+#  メイン分析 ①スコアリング で使う。core/scoring.py がこれを読む。
+#  ★ このファイルの値はモデルを一切通らない。すべて規則計算。
+#
+#  1 セル（step × プローブ）のスコア =
+#      事前分析の優先度 × weights.prior          ← probes.yaml の probe_prior
+#    + LLM の観点ラベル × weights.label           ← メイン分析 ④ で LLM が付ける 0〜2
+#    + SOP 記述の根拠   × weights.sop_rationale   ← 下の sop_rationale_probes
+#    + SOP 差分         × weights.relation        ← 下の relation_to_probes
+#    + 記述密度         × weights.density         ← 下の field_to_probe
+#
+#  このスコアが min_cell_score 以上なら open（要質問）、未満なら skip（質問しない）。
+# ============================================================
+
+
+# 【出典：設計判断】各起点の重み
+weights:
+  prior: 0.5         # 事前分析の優先度（0〜2）に掛ける。
+                     # この値はプローブごとの定数で、step 間の区別を作らない。
+                     # 1 のままだと列全体を持ち上げてしまい、LLM ラベルと規則シグナルが埋もれる。
+                     # 「傾ける」程度に留めるため 0.5。実データで分布を見て再調整すること
+  label: 1           # LLM ラベル（0〜2）に掛ける
+  sop_rationale: 1
+  relation: 1        # 9/2 の実績 0 件。低く置くか削除するかは要判断
+  density: 1
+
+# 【出典：設計判断】このスコア以上のセルを open にする
+# 予算（1 サイクル 20 問）の 1.5〜2 倍程度に収まる値を選ぶ。
+# 実データで一度 --only-scoring を回し、スコア分布を見てから決めること
+min_cell_score: 2.5
+
+
+# ------------------------------------------------------------
+# 【出典：事前分析＝9/2】SOP 記述の根拠
+#   対応する SOP 項目がある step では「手順書はなぜこれを求めるのか」を問える。
+#   9/2 では L104-108（なぜ CPU 型番をメモするのか）がこの起点から出た。
+# ------------------------------------------------------------
+sop_rationale_probes: [judgment_criterion, precondition]
+
+
+# ------------------------------------------------------------
+# 【出典：設計判断】SOP 差分 → 押し上げる観点
+#   9/2 のインタビューで SOP 差分を起点とした質問は 58 項目中 1 件（L127）。
+#   その 1 件から出た知識は quality_check に収まった。
+#   対応表そのものはインタビューから導いたものではなく、関係の意味から決めた。
+# ------------------------------------------------------------
+relation_to_probes:
+  matched: []
+  sequence_divergence: [precondition, judgment_criterion]
+  method_divergence: [expert_tip, sensory_cue, quality_check]
+  ao_only: [expert_tip, precondition]
+  sop_only: [judgment_criterion, exception_handling]
+
+
+# ------------------------------------------------------------
+# 【出典：設計判断】記述密度 → 押し上げる観点
+#   AO-OP の該当フィールドが空なら、その観点を押し上げる。
+#   全 step で一律に空（または一律に埋まっている）フィールドは識別力がなく、
+#   その観点だけを一律に押し上げて偏りを作るため、充足率がこの範囲外なら自動で無効化する。
+# ------------------------------------------------------------
+density_fill_rate_range: [0.2, 0.8]
+
+field_to_probe:
+  on_failure: exception_handling
+  completion_criterion: completion_standard
+  verification: quality_check
+  prerequisites: precondition

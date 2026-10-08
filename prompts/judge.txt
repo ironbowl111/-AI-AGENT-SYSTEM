@@ -1,0 +1,23 @@
+# 【プロンプト④】回答の深さ判定（研究計画 第 6 節／config/rubric.yaml と対応）
+# 置換変数: {axes}, {terminal}, {threshold}, {question}, {answer}
+回答を評価し、JSON のみを返してください。
+
+## 3 軸（各 0 または 1）
+{axes}
+
+## 終止状態の判定（重要）
+causality が 0 のとき、それが「浅いだけ」なのか「本当に理由が存在しない」のかを区別してください。後者なら追問しても空転します。
+{terminal}
+該当する場合は terminal にその種類を入れ、sufficient は true にしてください（探索済みとして扱う）。
+
+## 判定
+3 軸の合計が {threshold} 以上なら sufficient = true。
+
+## 質問
+{question}
+
+## 回答
+{answer}
+
+## 出力
+{{"specificity": 0, "causality": 0, "clarity": 0, "terminal": null, "sufficient": false, "reason": "..."}}

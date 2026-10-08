@@ -1,0 +1,133 @@
+# ============================================================
+# 【コンフィグ 1/2】CTA 8 プローブ
+#
+#  このファイルには出典の異なる二種類の値が入っています。
+#  どの値がどこから来たかを、ブロックごとの【出典】で明記しています。
+#
+#    【出典：CTA一般】        Clark et al. の CPP に基づく一般的定義。インタビュー由来ではない
+#    【出典：事前分析＝9/2】   9/2 の回顧的インタビューの分析結果。これがコンフィグの本体
+#
+#  研究計画の二段構成との対応:
+#    事前分析（人がコンフィグを決める・1 回）  → このファイルの【事前分析】ブロック
+#    メイン分析（LLM が自動で回す・N×M 回）    → このファイルを読むだけで書き換えない
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 【出典：CTA一般】8 プローブの定義
+#   direction は質問生成プロンプトにそのまま埋め込まれる。
+#   interview_example は【出典：事前分析＝9/2】。同じ観点で 9/2 に実際に出た知識の例で、
+#   質問生成時に「このタスク領域ではこういう答えが返ってくる」という参考として渡す。
+#   → 一般的な CTA 定義を、対象タスク領域に接地させるための値
+# ------------------------------------------------------------
+probes:
+  judgment_criterion:
+    name_ja: 判断基準
+    asks: 何を根拠にその決定をしたか
+    direction: 何を見て、何を基準にそう決めたのかを問う
+    interview_example: ネジ頭がプラスだったのでプラスドライバーを選んだ（L5）
+
+  sensory_cue:
+    name_ja: 感覚的手がかり
+    asks: 見た・聞いた・触れた感覚として何を捉えたか
+    direction: 手応え・音・見え方など、知覚した手がかりを問う
+    interview_example: 硬くなったタイミングでドライバーを抜く（L68）／カチッと言わなくなるまで押す（L57）
+
+  exception_handling:
+    name_ja: 例外処理
+    asks: うまくいかなかったときにどうするか
+    direction: 失敗した場合・想定外だった場合に何をするかを問う
+    interview_example: ネジを基盤に落とした → カバーを一度外して指でつまめる位置に寄せた（L33-39）
+
+  expert_tip:
+    name_ja: 熟練者の工夫
+    asks: 手順書に書かれていない自分なりのやり方
+    direction: 手順書に書かれていない、自分なりの工夫を問う
+    interview_example: ドライバーの上部を持ち、親指と中指だけで回すと安定する（L18-19）
+
+  precondition:
+    name_ja: 前提条件
+    asks: 着手前に整っている必要があること
+    direction: この操作を始める前に整っている必要があることを問う
+    interview_example: 外す前にネジが何本あるかを先に確認する（L5）
+
+  completion_standard:
+    name_ja: 完了基準
+    asks: どうなったら次に進んでよいか
+    direction: どうなったら完了とみなし次に進んでよいのかを問う
+    interview_example: 締め切らず、緩すぎず硬すぎず、カバーが浮かない塩梅で止める（L47-53）
+
+  quality_check:
+    name_ja: 品質確認
+    asks: 結果が正しいことをどう確かめるか
+    direction: 結果が正しいことをどうやって確かめるかを問う
+    interview_example: 念のため各辺を二度ずつ押して確認した（L58）
+
+  safety_note:
+    name_ja: 安全上の注意
+    asks: 危険・破損につながる点とその回避
+    direction: 危険や破損につながる点と、その回避方法を問う
+    interview_example: 基板に触れる前に椅子の金属部分に触れて静電気を逃がす（L29）
+
+
+# ------------------------------------------------------------
+# 【出典：事前分析＝9/2】プローブの優先度
+#
+#   9/2 のインタビュー書き起こしを人手でアノテーションし（58 知識項目）、
+#   各プローブに該当した件数を数えたもの。2〜3 類にまたがる項目は各類に 1 件ずつ計上。
+#
+#   優先度 = 2 × 件数 / 最大件数   （0〜2 の範囲に正規化。core/scoring.py が計算）
+#
+#   この値は全 step に一律に加算される。step ごとの差は他の起点が作る。
+#   つまり「このタスク領域では、どの観点が問われやすいか」というスコープ共通の事前分布。
+#
+#   basis で使う数え方を切り替える:
+#     all_mentions     全知識項目での出現数（既定）
+#     single_only      1 類にだけ収まった項目のみ
+#     question_driven  インタビュアーの質問が起点の項目のみ（作業者の自発発話を除く）
+#
+#   ★ 研究会発表の値と数え方が違う場合は、ここの件数を差し替えること。
+# ------------------------------------------------------------
+probe_prior:
+  basis: all_mentions
+  source: 9/2 回顧的インタビュー アノテーション草案 v0.1（58 項目）
+  counts:
+    all_mentions:
+      judgment_criterion: 10
+      sensory_cue: 7
+      exception_handling: 8
+      expert_tip: 14
+      precondition: 1
+      completion_standard: 4
+      quality_check: 7
+      safety_note: 3
+    single_only:
+      judgment_criterion: 4
+      sensory_cue: 1
+      exception_handling: 4
+      expert_tip: 8
+      precondition: 1
+      completion_standard: 1
+      quality_check: 4
+      safety_note: 2
+    question_driven:
+      judgment_criterion: 5
+      sensory_cue: 1
+      exception_handling: 7
+      expert_tip: 7
+      precondition: 0
+      completion_standard: 0
+      quality_check: 4
+      safety_note: 2
+
+
+# 並列スコア時の優先順位（上から順に採用。ランダムにしないこと）
+tie_break_order:
+  - judgment_criterion
+  - sensory_cue
+  - exception_handling
+  - expert_tip
+  - precondition
+  - completion_standard
+  - quality_check
+  - safety_note

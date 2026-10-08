@@ -1,0 +1,187 @@
+{
+  "document": {
+    "id": "AOOP-PC-001-REMOVED",
+    "derived_from": "AOOP-PC-001 v0.9",
+    "created": "2026-10-04",
+    "note": "aoop.json（v0）から aoop_v1.json を作る際に除いた句の一覧。いずれも映像フレームからは記述できない、目的・理由・知覚・判断に属する記述であり、テーマB が対話で引き出す対象そのもの。cta_probe は該当しそうな CTA 観点、ekeop_destination は 付録B JSON Schema v2.0 における戻り先フィールド。",
+    "total": 22
+  },
+  "removed": [
+    {
+      "step_id": "1.1",
+      "field": "action",
+      "original": "キーボードを操作し、画面に反応がないことを確認する",
+      "removed_phrase": "画面に反応がないことを確認する（→「確認する」は目的）",
+      "cta_probe": "completion_standard",
+      "ekeop_destination": "steps[].verification.criterion"
+    },
+    {
+      "step_id": "1.1",
+      "field": "verification",
+      "original": "キーボードを再度操作して反応がないことを見る",
+      "removed_phrase": "キーボードを再度操作して反応がないことを見る（→何を見れば良いかは判断）",
+      "cta_probe": "quality_check",
+      "ekeop_destination": "steps[].verification.method"
+    },
+    {
+      "step_id": "1.3",
+      "field": "action",
+      "original": "再度キーボードを操作し、入力が受け付けられないことを確認する",
+      "removed_phrase": "入力が受け付けられないことを確認する",
+      "cta_probe": "completion_standard",
+      "ekeop_destination": "steps[].verification.criterion"
+    },
+    {
+      "step_id": "1.4",
+      "field": "action",
+      "original": "本体を裏返し、裏面のねじの位置と本数を目視で確認する",
+      "removed_phrase": "ねじの位置と本数を目視で確認する",
+      "cta_probe": "precondition",
+      "ekeop_destination": "steps[].actions[].rationale"
+    },
+    {
+      "step_id": "1.5",
+      "field": "prerequisites",
+      "original": "ねじ頭の形状が確認できている",
+      "removed_phrase": "ねじ頭の形状が確認できている（→確認できたか否かは判断）",
+      "cta_probe": "judgment_criterion",
+      "ekeop_destination": "steps[].actions[].rationale"
+    },
+    {
+      "step_id": "1.6",
+      "field": "action",
+      "original": "手前側の傾斜面にあるねじ2本を、ドライバーを寝かせた角度で外す",
+      "removed_phrase": "傾斜面にある（→なぜ傾けるのかの根拠）",
+      "cta_probe": "judgment_criterion",
+      "ekeop_destination": "techniques[].purpose"
+    },
+    {
+      "step_id": "1.9",
+      "field": "action",
+      "original": "外したねじを取り外した順に作業台の上に並べる",
+      "removed_phrase": "取り外した順に（→順序を保つ意図は映像から判定できない）",
+      "cta_probe": "expert_tip",
+      "ekeop_destination": "expert_tips[]"
+    },
+    {
+      "step_id": "1.10",
+      "field": "review_note",
+      "original": "1回目は工具が滑り、2回目に位置を変えて成功している可能性。要確認",
+      "removed_phrase": "2回目に位置を変えて成功している可能性（→成否の判定は推測）",
+      "cta_probe": "exception_handling",
+      "ekeop_destination": "troubleshooting[]"
+    },
+    {
+      "step_id": "1.12",
+      "field": "action",
+      "original": "本体を回転させ、作業しやすい向きに置き直す",
+      "removed_phrase": "作業しやすい向きに（→「作業しやすい」は判断）",
+      "cta_probe": "expert_tip",
+      "ekeop_destination": "techniques[].purpose"
+    },
+    {
+      "step_id": "2.2",
+      "field": "action",
+      "original": "カバーの左側が浮いていないか見て、ねじを少し緩める",
+      "removed_phrase": "左側が浮いていないか見て（→何を見るかは知覚・判断）",
+      "cta_probe": "sensory_cue",
+      "ekeop_destination": "techniques[].failure_indicators[]"
+    },
+    {
+      "step_id": "2.2",
+      "field": "completion_criterion",
+      "original": "カバーが浮いていない",
+      "removed_phrase": "カバーが浮いていない（→「浮いている」の判定は知覚）",
+      "cta_probe": "completion_standard",
+      "ekeop_destination": "techniques[].success_indicators[]"
+    },
+    {
+      "step_id": "2.2",
+      "field": "verification",
+      "original": "カバーの縁を見て浮きがないことを確認する",
+      "removed_phrase": "カバーの縁を見て浮きがないことを確認する",
+      "cta_probe": "quality_check",
+      "ekeop_destination": "steps[].verification.method"
+    },
+    {
+      "step_id": "2.3",
+      "field": "verification",
+      "original": "各辺を二度ずつ押して確認する",
+      "removed_phrase": "各辺を二度ずつ押して確認する（→「確認」は目的。押す動作自体は action にある）",
+      "cta_probe": "quality_check",
+      "ekeop_destination": "steps[].verification.method"
+    },
+    {
+      "step_id": "2.6",
+      "field": "action",
+      "original": "本体を持ち上げ、光源のある方向に向けて表面を目視で確認する",
+      "removed_phrase": "光源のある方向に向けて／目視で確認する（→照明条件の工夫と目的）",
+      "cta_probe": "expert_tip",
+      "ekeop_destination": "expert_tips[]"
+    },
+    {
+      "step_id": "3.3",
+      "field": "action",
+      "original": "設定画面を開き、タッチパッドを1本指で操作してポインタの移動を確認する",
+      "removed_phrase": "ポインタの移動を確認する",
+      "cta_probe": "quality_check",
+      "ekeop_destination": "steps[].verification.criterion"
+    },
+    {
+      "step_id": "3.4",
+      "field": "action",
+      "original": "タッチパッドを2本指で操作し、画面がスクロールすることを確認する",
+      "removed_phrase": "画面がスクロールすることを確認する",
+      "cta_probe": "quality_check",
+      "ekeop_destination": "steps[].verification.criterion"
+    },
+    {
+      "step_id": "3.6",
+      "field": "action",
+      "original": "画面と手元を複数回往復しながら、書き写した内容を照合する",
+      "removed_phrase": "書き写した内容を照合する（→照合という目的）",
+      "cta_probe": "quality_check",
+      "ekeop_destination": "steps[].verification.method"
+    },
+    {
+      "step_id": "3.7",
+      "field": "action",
+      "original": "設定画面からOSのバージョンを確認し、指で画面を差しながら書き写す",
+      "removed_phrase": "OSのバージョンを確認し（→何を確認するかの目的）",
+      "cta_probe": "quality_check",
+      "ekeop_destination": "steps[].verification.criterion"
+    },
+    {
+      "step_id": "3.7",
+      "field": "verification",
+      "original": "指差しで該当箇所を確認する",
+      "removed_phrase": "指差しで該当箇所を確認する",
+      "cta_probe": "quality_check",
+      "ekeop_destination": "steps[].verification.method"
+    },
+    {
+      "step_id": "3.8",
+      "field": "action",
+      "original": "メモ帳を開き、改行を挟んでキー配列と同じ見た目になるよう整えてから、英数字キーを一つずつ押す",
+      "removed_phrase": "キー配列と同じ見た目になるよう整えてから（→照合しやすくする工夫）",
+      "cta_probe": "expert_tip",
+      "ekeop_destination": "expert_tips[]"
+    },
+    {
+      "step_id": "3.8",
+      "field": "verification",
+      "original": "入力された文字列と押したキーを見比べる",
+      "removed_phrase": "入力された文字列と押したキーを見比べる（→見比べるは知覚・判断）",
+      "cta_probe": "quality_check",
+      "ekeop_destination": "steps[].verification.method"
+    },
+    {
+      "step_id": "3.9",
+      "field": "action",
+      "original": "カメラアプリを起動し、自分の腕と帽子を画面に映して色味を見比べる",
+      "removed_phrase": "色味を見比べる（→自作した比較基準）",
+      "cta_probe": "judgment_criterion",
+      "ekeop_destination": "techniques[].success_indicators[]"
+    }
+  ]
+}
