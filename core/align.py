@@ -50,6 +50,7 @@ def run_alignment(llm, sop, aoop, previous=None, settings=None):
     result = llm.chat_json(
         "あなたは作業手順書の分析者です。",
         user,
+        max_tokens=6000,      # SOP 20 項目 × 理由文で 2000 を超え、JSON が途中で切れるため
         fallback={"pairs": [], "unmatched_sop_items": []},
     )
     result.setdefault("pairs", [])

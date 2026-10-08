@@ -1,3 +1,5 @@
+**日本語** · [English](README.en.md) · [简体中文](README.zh-CN.md)
+
 # EKE-OP 生成パイプライン
 
 AO-OP（映像から生成された動作観察手順書）を起点に、CTA の観点空間に沿って
